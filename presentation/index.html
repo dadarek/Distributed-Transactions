@@ -39,8 +39,8 @@
 	<ol>
 		<li><h3>What are Transactions</h3></li>
 		<li><h3>ACID Properties</h3></li>
-		<li><h3>Local Transactions</h3></li>
-		<li><h3>Distributed Transactions</h3></li>
+		<li><h3>2-Phase Commit</h3></li>
+		<li><h3>Checkpointing + Logging</h3></li>
 	</ol>
 </section>
 
@@ -96,12 +96,20 @@
   </ul>
 </section>
 
+<section class="slide" id="acid-quiz">
+  <h2>Quiz Time</h2>
+  <ol>
+    <li><h3>"It's pronounced "nucular"</h3></li>
+  </ul>
+</section>
+
 <section class="slide" id="isolation-revisited">
   <h2>Isolation (revisited)</h2>
   <ol>
     <li><h3>Trade-offs efficiency v.s. safety</h3></li>
     <li><h3>"Snapshot" isolation</h3></li>
     <li><h3>Isolation levels + Transaction Deadlock victims</h3></li>
+    <li><h3>Controlled Concurrency: Stand Up</h3></li>
   </ul>
 </section>
 
@@ -289,122 +297,110 @@
   </div>
 </section>
 
+<section class="slide" id="protocol">
+  <h2>def Protocol</h2>
+  <ol>
+    <li><h3>Diplomatic Meetings</h3></li>
+    <li><h3>"Get stuff done"</h3></li>
+    <li><h3>Skiing/Shopping</h3></li>
+    <li><h3>When things go wrong ...</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="one-phase-commit">
+  <h2>One-Phase Commit (1PC)</h2>
+  <ol>
+    <li><h3>Just do it!</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="one-phase-commit-whoops">
+  <h2>One-Phase Commit - Whoops!</h2>
+  <ol>
+    <li><h3>What if someone can't commit?</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit">
+  <h2>Two-Phase Commit (2PC)</h2>
+  <ol>
+    <li><h3>Better ...</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-assumptions">
+  <h2>Two-Phase Commit - Assumptions</h2>
+  <ol>
+    <li><h3>Stable Storage</h3></li>
+    <li><h3>Write-Ahead Logging</h3></li>
+    <li><h3>No Corruptions</h3></li>
+    <li><h3>Nobody dies forever</h3></li>
+    <li><h3>Communication between nodes</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit">
+  <h2>Stable Storage is 'relative'</h2>
+  <ol>
+    <li><h3>Redundancy</h3></li>
+    <li><h3>Sinkhole</h3></li>
+  </ol>
+</section>
+
 <section class="slide" id="error-recovery">
   <h2>Error Recovery</h2>
   <ol>
     <li><h3><em>Not always possible...</em></h3></li>
     <li><br /><h3>Recover $$$ from ATM Error</h3></li>
     <li><br /><h3>Delete internet cache fail:<br />
-      <span style="font-family: calibri">rm -rf&nbsp;&nbsp;/</span></h3></li>
-  </ul>
+      <span style="font-family: calibri">$ rm -rf&nbsp;&nbsp;/</span></h3></li>
+    <li><br /><h3>Compensating Transactions</h3></li>
+  </ol>
 </section>
 
-<section class="slide" id="how-to-overview">
-  <h2>TODO</h2>
+<section class="slide" id="checkpointing-logging">
+  <h2>Checkpointing + Logging</h2>
+  <ol>
+    <li><h3>Coordinate Checkpointing</h3></li>
+    <li><h3>Optimistic + Pessimistic Logging</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-na">
+  <h2>Two-Phase Commit - Maybe not?</h2>
+  <ol>
+    <li><h3>Large, Independent Systems</h3></li>
+    <li><h3>Asynch - Amazon MWS</h3></li>
+    <li><h3>Airline Bookings</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-problems">
+  <h2>Two-Phase Commit - Problems?</h2>
+  <ol>
+    <li><h3>Coordinator + Node Crash</h3></li>
+    <li><h3>What do we do?</h3></li>
+    <li><h3>Block</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="three-phase">
+  <h2>Three-Phase Commit (3PC)</h2>
+  <ol>
+    <li><h3>Vote (rollback on timeout)</h3></li>
+    <li><h3>Prepare (commit on timeout - unless YOU crash)</h3></li>
+    <li><h3>Commit</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="what-well-cover">
+  <h2>What We Just Learned</h2>
 	<ol>
-		<li>
-			<h3>Have LESS words in these slides<h3>
-			<p>You won't rely on them as much.</p>
-		</li>
-		<li>
-			<h3>Is nesting possible?</h3>
-			<p>So one of the nodes is a TM that relays to its own nodes?</p>
-		</li>
-		<li>
-			<h3>Dynamic 2PC</h3>
-			<p>Dynamic coordinator, everyone does something and we'll see who was last ...</p>
-		</li>
-		<li>
-			<h3>Compensating Transactions</h3>
-			<p>When you tell United + Southwest to commit, you crash, and you never tell Hertz to commit.  Hertz rollsback (after timeout), and you must rollback United + SW with a compensating transaction.</p>
-		</li>
-		<li>
-			<h3>Other Examples</h3>
-			<p>Paying bills - t-mobile updates their database &amp; banks database.</p>
-		</li>
+		<li><h3>What are Transactions</h3></li>
+		<li><h3>ACID Properties</h3></li>
+		<li><h3>2-Phase Commit</h3></li>
+		<li><h3>Checkpointing + Logging</h3></li>
 	</ol>
-</section>
-
-<section class="slide" id="how-to-overview">
-  <h2>Assumptions</h2>
-	<ol>
-		<li><h3>Stable storage + write-ahead log</h3></li>
-		<li><h3>Write-ahead log is not corrupted (or lost) on crash</h3></li>
-		<li><h3>Nobody crashes forever and ever</h3></li>
-		<li><h3>Nodes can talk with each other</h3></li>
-	</ol>
-</section>
-
-<section class="slide" id="how-to-overview">
-  <h2>How to decrease locking?</h2>
-	<ol>
-		<li class="slide">
-			<h3>Finer Granularity of Resources</h3>
-			<p>(Insert image of coffee beans) So, Flight 333 does not lock when you book Flight 456.</p>
-		</li>
-	</ol>
-</section>
-<section class="slide" id="how-to-overview">
-  <h2>How to prevent deadlocks?</h2>
-	<ol>
-		<li class="slide">
-			<h3>Lock (and release) in same order</h3>
-			<p>This only works if everyone plays this game. (Philosophers fork problem - though not really - here you MUST start on the same lock (can't start in the middle because you'll round robin and still deadlock))</p>
-		</li>
-	</ol>
-</section>
-
-<section class="slide" id="markup">
-	<h1>Meet: The Transaction Manager</h1>
-</section>
-
-<section class="slide" id="extensions">
-	<h2>Serializable Transactions</h2>
-	
-	<ul>
-		<li class="slide" id="extensions-goto">
-      To the outside world, each transaction (all it's effects) took place before or after any other transaction.  (No interleaving)
-		</li>
-
-		<li class="slide" id="extensions-goto">
-      (insert image here of serialized, and not serialized - maybe a stack of blocks that show interleaving and a stack that shows no interleaving - each block would be a step of a transaction).
-		</li>
-
-		<li class="slide" id="extensions-goto">
-      Read this: http://en.wikipedia.org/wiki/Schedule_(computer_science)
-		</li>
-	</ul>
-	
-</section>
-
-<section class="slide" id="elements-blockquotes">
-	<h2>Why 2-phase commit can't always apply?</h2>
-  <blockquote cite="http://example.org" class="slide">
-		<p>Because our background script that processes the orders only runs at midnight.</p>
-		<p><cite>Big Important Company</cite></p>
-	</blockquote>
-</section>
-
-
-<section class="slide" id="elements-uml-1">
-  <p><img src="images/HttpServer.png" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="elements-uml-2">
-  <p><img src="images/HttpConnectionhandler.png" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="elements-uml-3">
-  <p><img src="images/ChartingServer.png" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="elements-uml-4">
-  <p><img src="images/ThreadedConnectionHandler.png" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="digging-deeper">
-	<h2>Thank You</h2>
-	<p>If you want to learn about our server, checkout our <a href="https://github.com/dadarek/HTTP-Server">github repo</a>.</p>
 </section>
 
 <!-- deck.navigation snippet -->
