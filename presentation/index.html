@@ -39,8 +39,8 @@
 	<ol>
 		<li><h3>What are Transactions</h3></li>
 		<li><h3>ACID Properties</h3></li>
-		<li><h3>Checkpointing + Logging</h3></li>
 		<li><h3>2-Phase Commit Protocol</h3></li>
+		<li><h3>Checkpointing + Logging</h3></li>
 	</ol>
 </section>
 
@@ -443,15 +443,6 @@
   <p>TODO: Image of failed one-phase commit</p>
 </section>
 
-<section class="slide" id="two-phase-commit">
-  <h2>Two-Phase Commit (2PC)</h2>
-  <ol>
-    <li><h3>1) Vote</h3></li>
-    <li><h3>2) Decide</h3></li>
-    <li><h3>3) Go!</h3></li>
-  </ol>
-</section>
-
 <section class="slide" id="two-phase-assumptions">
   <h2>Two-Phase Commit - Assumptions</h2>
   <ol>
@@ -463,19 +454,21 @@
   </ol>
 </section>
 
-<section class="slide" id="checkpointing-logging">
-  <h2>Checkpointing + Logging</h2>
-  <ol>
-    <li><h3>Coordinate Checkpointing</h3></li>
-    <li><h3>Optimistic + Pessimistic Logging</h3></li>
-  </ol>
-</section>
-
 <section class="slide" id="stable-storage">
   <h2>Stable Storage is 'relative'</h2>
   <ol>
     <li><h3>Redundancy</h3></li>
+    <li><h3>We have 2 arms, 2 eyes, 10 fingers ... </h3></li>
     <li><h3>Sinkhole</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit">
+  <h2>Two-Phase Commit (2PC)</h2>
+  <ol>
+    <li><h3>1) Vote</h3></li>
+    <li><h3>2) Decide</h3></li>
+    <li><h3>3) Go!</h3></li>
   </ol>
 </section>
 
@@ -520,6 +513,7 @@
 <section class="slide" id="two-phase-state-machine">
   <h2>Two-Phase State Machine</h2>
 </section>
+
 <section class="slide" id="error-recovery">
   <h2>Error Recovery</h2>
   <ol>
@@ -529,6 +523,28 @@
       <span style="font-family: calibri">$ rm -rf&nbsp;&nbsp;/</span></h3></li>
     <li><br /><h3>Compensating Transactions</h3></li>
   </ol>
+</section>
+
+<section class="slide" id="checkpointing-logging">
+  <h2>Checkpointing + Logging</h2>
+  <ol>
+    <li><h3>When things go really "kerplooie"</h3></li>
+    <li><h3>Independant Checkpointing</h3></li>
+    <li><h3>Coordinated Checkpointing</h3></li>
+    <li><h3>Optimistic Logging</h3></li>
+    <li><h3>Pessimistic Logging</h3></li>
+    <li><h3>Garbage Collection</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="checkpointing">
+  <h2>Distributed Checkpointing</h2>
+  <p>TODO: Picture of distirbuted checkpoints</p>
+</section>
+
+<section class="slide" id="checkpointing-domino-effect">
+  <h2>Domino Effect</h2>
+  <p>TODO: Picture of distirbuted domino effect</p>
 </section>
 
 <section class="slide" id="two-phase-na">
@@ -558,13 +574,20 @@
   </ol>
 </section>
 
+<section class="slide" id="three-phase-blocks">
+  <h2>Three-Phase Commit - Blocks</h2>
+  <ol>
+    <li><h3>Commit</h3></li>
+  </ol>
+</section>
+
 <section class="slide" id="what-well-cover">
   <h2>What We Just Learned</h2>
 	<ol>
 		<li><h3>What are Transactions</h3></li>
 		<li><h3>ACID Properties</h3></li>
-		<li><h3>Checkpointing + Logging</h3></li>
 		<li><h3>2-Phase Commit Protocol</h3></li>
+		<li><h3>Checkpointing + Logging</h3></li>
 	</ol>
 </section>
 
