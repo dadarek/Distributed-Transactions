@@ -92,15 +92,110 @@
   <h2>Durable</h2>
   <ol>
     <li><h3>Once you commit, it sticks</h3></li>
-    <li><h3>Sinkholes ...</h3></li>
+    <li><h3>Redundancy</h3></li>
   </ul>
+  <p class="slide">-- image of sinkhole --</p>
 </section>
 
-<section class="slide" id="acid-quiz">
-  <h2>Quiz Time</h2>
-  <ol>
-    <li><h3>"It's pronounced "nucular"</h3></li>
-  </ul>
+<section class="slide" id="acid-quiz-1">
+  <h2>Quiz Time!</h2>
+  <h3 style="font-family: Arial">
+    You purchase a delicious Starbucks White Chocolate Mocha
+    <br >
+    <br />Total: $4.80
+    <br />You pay with: $5
+    <br />Your change: ¢25
+  </h3>
+</section>
+
+<section class="slide" id="acid-quiz-2">
+  <h2>Quiz Time!</h2>
+  <h3 style="font-family: Arial">The French are seizing a British castle.  1 army attacks from the West, 1 army attacks from the East.  When the King gives signal, 2 messengers on horses carry the "Attack" message to each army.  One messenger is killed along the way.  As a result, the East army proceeds with the invasion, the West army packs up and goes home.</h3>
+</section>
+
+<section class="slide" id="acid-quiz-3">
+  <h2>Quiz Time!</h2>
+  <h3 style="font-family: Arial">
+    One evening while jogging, Eric gets brilliant idea for a new feature for I Like Run.  Before going to sleep, he logs in to Artisan and adds the story to the backlog.
+  </h3>
+  <h3 style="font-family: Arial">
+    Later that night, Artisan servers crash and Brian quickly rushes to restore backups before anyone notices.
+  </h3>
+  <h3 style="font-family: Arial">
+    Next morning, Eric does not see his story in Artisan and begins to wonder if it was just a dream?
+  </h3>
+</section>
+
+<section class="slide" id="acid-quiz-4">
+  <h2>Quiz Time!</h2>
+  <h3 style="font-family: Arial">
+    There are 2,500,000,000 rabbits in the entire world.
+  </h3>
+  <h3 style="font-family: Arial">
+    A magician pulls another one out of his hat.
+  </h3>
+  <h3 style="font-family: Arial">
+    There are now 2,500,000,001 rabbits in the entire world.
+  </h3>
+</section>
+
+<section class="slide" id="isolation-graph">
+  <h2>Isolated (revisited)</h2>
+  <table class="isolation">
+    <tr>
+      <th><h3>What Actually Happens</h3></th>
+      <th>&nbsp;&nbsp;</th>
+      <th><h3>What the World (Should) See</h3></th>
+    </tr><tr>
+      <td>
+        <table>
+          <tr>
+            <th>Transaction 1</th>
+            <th>Transaction 2</th>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+      <td>&nbsp;&nbsp;</td>
+      <td>
+        <table>
+          <tr>
+            <th>Transaction 1</th>
+            <th>Transaction 2</th>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </section>
 
 <section class="slide" id="isolation-revisited">
