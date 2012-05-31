@@ -31,7 +31,78 @@
 
 <!-- Begin slides -->
 <section class="slide" id="title-slide">
-	<h1>Welcome!</h1>
+	<h1>(Distributed) Transactions</h1>
+</section>
+
+<section class="slide" id="what-well-cover">
+  <h2>What We'll Cover</h2>
+	<ol>
+		<li><h3>What are Transactions</h3></li>
+		<li><h3>ACID Properties</h3></li>
+		<li><h3>Local Transactions</h3></li>
+		<li><h3>Distributed Transactions</h3></li>
+	</ol>
+</section>
+
+<section class="slide" id="few-examples">
+  <h2>A Few Examples</h2>
+	<ol class="slide">
+		<li><h3>.........</h3></li>
+	</ol>
+</section>
+
+<section class="slide" id="acid">
+  <h2>ACID</h2>
+  <hr />
+  <h2>Atomic</h2>
+  <h2>Consistent</h2>
+  <h2>Isolated</h2>
+  <h2>Durable</h2>
+</section>
+
+<section class="slide" id="atomic">
+  <h2>Atomic</h2>
+  <ol>
+    <li><h3>All or none</h3></li>
+    <li><h3>Castle Siege</h3></li>
+    <li><h3>Transfer Money Fail</h3></li>
+  </ul>
+</section>
+
+<section class="slide" id="consistent">
+  <h2>Consistent</h2>
+  <ol>
+    <li><h3>Varies by context</h3></li>
+    <li><h3>No "rules" broken (OK within transaction)</h3></li>
+    <li><h3>Plane Reservations</h3></li>
+    <li><h3>Easier defined within database (FK's, constraints, UK's)</h3></li>
+  </ul>
+</section>
+
+<section class="slide" id="isolated">
+  <h2>Isolated</h2>
+  <ol>
+    <li><h3>Nobody can see "in-between" steps</h3></li>
+    <li><h3>Concurrency Control</h3></li>
+    <li><h3>Depositing Check + Direct Depost</h3></li>
+  </ul>
+</section>
+
+<section class="slide" id="durable">
+  <h2>Durable</h2>
+  <ol>
+    <li><h3>Once you commit, it sticks</h3></li>
+    <li><h3>Sinkholes ...</h3></li>
+  </ul>
+</section>
+
+<section class="slide" id="isolation-revisited">
+  <h2>Isolation (revisited)</h2>
+  <ol>
+    <li><h3>Trade-offs efficiency v.s. safety</h3></li>
+    <li><h3>"Snapshot" isolation</h3></li>
+    <li><h3>Isolation levels + Transaction Deadlock victims</h3></li>
+  </ul>
 </section>
 
 <section class="slide" id="serializable">
@@ -50,11 +121,18 @@
       <td class="active">
         <span class="comment">/* do some stuff ... */</span>
       </td>
-      <td>&nbsp;</td>
+      <td class="active">
+        <span class="comment">/* tries update, but is blocked... */</span>
+      </td>
     </tr><tr>
       <td class="active">
         read AGE of MEMBER_ID = 1
         <span class="comment">/* will still read 21 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td class="active">
+        COMMIT
       </td>
       <td>&nbsp;</td>
     </tr><tr>
@@ -171,6 +249,54 @@
       </td>
     </tr>
   </table>
+</section>
+
+<section class="slide" id="deadlocks">
+  <h2>Deadlocks!</h2>
+  <table class="isolation">
+    <tr>
+      <th>Transaction 1</th>
+      <th>Transaction 2</th>
+    </tr><tr>
+      <td class="active">
+        update ORDERS
+        <span class="comment">/* Locks ORDERS */</span>
+      </td>
+      <td class="active">
+        update MEMBERS
+        <span class="comment">/* Locks MEMBERS */</span>
+      </td>
+    </tr><tr>
+      <td class="active">
+        update STORE_ITEMS
+        <span class="comment">/* Locks STORE_ITEMS */</span>
+      </td>
+      <td class="active">
+        update ORDERS
+        <span class="comment">/* <strong>BLOCKED</strong> by Transaction 1 */</span>
+      </td>
+    </tr><tr>
+      <td class="active">
+        update MEMBERS
+        <span class="comment">/* <strong>BLOCKED</strong> by Transaction 2 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+  <div class="slide">
+    <h2>Random Transaction Victim</h2>
+    <h3>Avoid with good concurrency control protocols</h3>
+  </div>
+</section>
+
+<section class="slide" id="error-recovery">
+  <h2>Error Recovery</h2>
+  <ol>
+    <li><h3><em>Not always possible...</em></h3></li>
+    <li><br /><h3>Recover $$$ from ATM Error</h3></li>
+    <li><br /><h3>Delete internet cache fail:<br />
+      <span style="font-family: calibri">rm -rf&nbsp;&nbsp;/</span></h3></li>
+  </ul>
 </section>
 
 <section class="slide" id="how-to-overview">
