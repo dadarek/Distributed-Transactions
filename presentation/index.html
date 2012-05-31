@@ -66,7 +66,7 @@
     <li><h3>All or none</h3></li>
     <li><h3>Castle Siege</h3></li>
     <li><h3>Transfer Money Fail</h3></li>
-  </ul>
+  </ol>
 </section>
 
 <section class="slide" id="consistent">
@@ -76,7 +76,7 @@
     <li><h3>No "rules" broken (OK within transaction)</h3></li>
     <li><h3>Plane Reservations</h3></li>
     <li><h3>Easier defined within database (FK's, constraints, UK's)</h3></li>
-  </ul>
+  </ol>
 </section>
 
 <section class="slide" id="isolated">
@@ -85,7 +85,7 @@
     <li><h3>Nobody can see "in-between" steps</h3></li>
     <li><h3>Concurrency Control</h3></li>
     <li><h3>Depositing Check + Direct Depost</h3></li>
-  </ul>
+  </ol>
 </section>
 
 <section class="slide" id="durable">
@@ -93,8 +93,8 @@
   <ol>
     <li><h3>Once you commit, it sticks</h3></li>
     <li><h3>Redundancy</h3></li>
-  </ul>
-  <p class="slide">-- image of sinkhole --</p>
+  </ol>
+  <p class="slide">TODO: image of sinkhole </p>
 </section>
 
 <section class="slide" id="acid-quiz-1">
@@ -106,11 +106,15 @@
     <br />You pay with: $5
     <br />Your change: ¢25
   </h3>
+  <br /><br />
+  <h3 class="slide">Atomic - Consistent - Isolated - Durable</h3>
 </section>
 
 <section class="slide" id="acid-quiz-2">
   <h2>Quiz Time!</h2>
   <h3 style="font-family: Arial">The French are seizing a British castle.  1 army attacks from the West, 1 army attacks from the East.  When the King gives signal, 2 messengers on horses carry the "Attack" message to each army.  One messenger is killed along the way.  As a result, the East army proceeds with the invasion, the West army packs up and goes home.</h3>
+  <br /><br />
+  <h3 class="slide">Atomic - Consistent - Isolated - Durable</h3>
 </section>
 
 <section class="slide" id="acid-quiz-3">
@@ -124,6 +128,8 @@
   <h3 style="font-family: Arial">
     Next morning, Eric does not see his story in Artisan and begins to wonder if it was just a dream?
   </h3>
+  <br /><br />
+  <h3 class="slide">Atomic - Consistent - Isolated - Durable</h3>
 </section>
 
 <section class="slide" id="acid-quiz-4">
@@ -137,6 +143,8 @@
   <h3 style="font-family: Arial">
     There are now 2,500,000,001 rabbits in the entire world.
   </h3>
+  <br /><br />
+  <h3 class="slide">Atomic - Consistent - Isolated - Durable</h3>
 </section>
 
 <section class="slide" id="isolation-graph">
@@ -205,7 +213,7 @@
     <li><h3>"Snapshot" isolation</h3></li>
     <li><h3>Isolation levels + Transaction Deadlock victims</h3></li>
     <li><h3>Controlled Concurrency: Stand Up</h3></li>
-  </ul>
+  </ol>
 </section>
 
 <section class="slide" id="serializable">
@@ -407,6 +415,7 @@
   <ol>
     <li><h3>Just do it!</h3></li>
   </ol>
+  <p>TODO: Image of one-phase commit</p>
 </section>
 
 <section class="slide" id="one-phase-commit-whoops">
@@ -414,6 +423,7 @@
   <ol>
     <li><h3>What if someone can't commit?</h3></li>
   </ol>
+  <p>TODO: Image of failed one-phase commit</p>
 </section>
 
 <section class="slide" id="two-phase-commit-blocks">
@@ -523,6 +533,10 @@
 		<li><h3>2-Phase Commit</h3></li>
 		<li><h3>Checkpointing + Logging</h3></li>
 	</ol>
+</section>
+
+<section class="slide" id="references">
+  <h2>References</h2>
 </section>
 
 <!-- deck.navigation snippet -->
