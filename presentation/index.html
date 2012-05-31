@@ -321,11 +321,38 @@
   </ol>
 </section>
 
-<section class="slide" id="two-phase-commit">
-  <h2>Two-Phase Commit (2PC)</h2>
+<section class="slide" id="two-phase-commit-blocks">
+  <h2>Two-Phase Commit Blocks</h2>
   <ol>
-    <li><h3>Better ...</h3></li>
+    <li><h3>Participant waiting for vote requests - abort after timeout</h3></li>
+    <li><h3>Coordinator waiting for vote replies - abort after timeout</h3></li>
+    <li><h3>Participants waiting for decision - CANNOT abort</h3>
+      <ol>
+        <li>Abort if: neighbor is waiting for vote request</li>
+        <li>Commit if: neighbor committed</li>
+        <li>Block if: all neighbors waiting for decision</li>
+      </ol>
+    </li>
   </ol>
+</section>
+
+<section class="slide" id="two-phase-upon-recovery">
+  <h2>Two-Phase Upon Recovery</h2>
+  <ol>
+    <li><h3>If you're in INIT - abort</h3></li>
+    <li><h3>If you made decision - contact coordinator</h3></li>
+    <li><h3>If you're in READY - contact neighbors or coordinator</h3>
+      <ol>
+        <li>Abort if: neighbor is waiting for vote request</li>
+        <li>Commit if: neighbor committed</li>
+        <li>Block if: all neighbors waiting for decision</li>
+      </ol>
+    </li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-state-machine">
+  <h2>Two-Phase State Machine</h2>
 </section>
 
 <section class="slide" id="two-phase-assumptions">
