@@ -34,6 +34,145 @@
 	<h1>Welcome!</h1>
 </section>
 
+<section class="slide" id="serializable">
+  <h2>Serializable <em>(no phantom reads)</em></h2>
+  <table class="isolation">
+    <tr>
+      <th>Transaction 1</th>
+      <th>Transaction 2</th>
+    </tr><tr>
+      <td class="active">
+        read AGE of MEMBER_ID = 1
+        <span class="comment">/* will read 21 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td class="active">
+        <span class="comment">/* do some stuff ... */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td class="active">
+        read AGE of MEMBER_ID = 1
+        <span class="comment">/* will still read 21 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td>&nbsp;</td>
+      <td class="active">
+        update AGE of MEMBER_ID = 1 (SET to 22)
+      </td>
+    </tr><tr>
+      <td>&nbsp;</td>
+      <td class="active">
+        <span class="comment">/* do some other stuff ... */</span>
+      </td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide" id="repeatable-read">
+  <h2>Repeatable Read <em>(no range locks)</em></h2>
+  <table class="isolation">
+    <tr>
+      <th>Transaction 1</th>
+      <th>Transaction 2</th>
+    </tr><tr>
+      <td class="active">
+        read MEMBERS with AGE &gt; 30
+        <span class="comment">/* receives 5 records */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td class="active">
+        <span class="comment">/* do some stuff ... */</span>
+      </td>
+      <td class="active">
+        <span class="comment">/* can't touch existing rows ... */</span>
+        <span class="comment">/* ... but can add new ones */</span>
+        insert MEMBER with AGE = 35
+      </td>
+    </tr><tr>
+      <td class="active">
+        read MEMBERS with AGE &gt; 30
+        <span class="comment">/* receives 6 records */</span>
+        <span class="comment">/* 5 repeatable + 1 phantom */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide" id="read-commited">
+  <h2>Read Commited <em>(non-repeatable reads)</em></h2>
+  <table class="isolation">
+    <tr>
+      <th>Transaction 1</th>
+      <th>Transaction 2</th>
+    </tr><tr>
+      <td class="active">
+        read AGE of MEMBER_ID = 1
+        <span class="comment">/* will read 21 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td class="active">
+        <span class="comment">/* do some stuff ... */</span>
+      </td>
+      <td class="active">
+        update AGE = 55 of MEMBER_ID = 1
+      </td>
+    </tr><tr>
+      <td class="active">
+        <span class="comment">/* do some more stuff ... */</span>
+      </td>
+      <td class="active">
+        COMMIT
+      </td>
+    </tr><tr>
+      <td class="active">
+        read AGE of MEMBER_ID = 1
+        <span class="comment">/* will NOW read 55 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</section>
+
+<section class="slide" id="read-uncommited">
+  <h2>Read Uncommited <em>(dirty)</em></h2>
+  <table class="isolation">
+    <tr>
+      <th>Transaction 1</th>
+      <th>Transaction 2</th>
+    </tr><tr>
+      <td class="active">
+        read AGE of MEMBER_ID = 1
+        <span class="comment">/* will read 21 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td class="active">
+        <span class="comment">/* do some stuff ... */</span>
+      </td>
+      <td class="active">
+        update AGE = 55 of MEMBER_ID = 1
+      </td>
+    </tr><tr>
+      <td class="active">
+        read AGE of MEMBER_ID = 1
+        <span class="comment">/* will NOW read 55 */</span>
+      </td>
+      <td>&nbsp;</td>
+    </tr><tr>
+      <td>&nbsp;</td>
+      <td class="active">
+        COMMIT
+      </td>
+    </tr>
+  </table>
+</section>
+
 <section class="slide" id="how-to-overview">
   <h2>TODO</h2>
 	<ol>
@@ -46,10 +185,6 @@
 			<p>So one of the nodes is a TM that relays to its own nodes?</p>
 		</li>
 		<li>
-			<h3>Create airline reservation system?</h3>
-			<p>Have the guys play this out...</p>
-		</li>
-		<li>
 			<h3>Dynamic 2PC</h3>
 			<p>Dynamic coordinator, everyone does something and we'll see who was last ...</p>
 		</li>
@@ -60,15 +195,6 @@
 		<li>
 			<h3>Other Examples</h3>
 			<p>Paying bills - t-mobile updates their database &amp; banks database.</p>
-		</li>
-	</ol>
-</section>
-<section class="slide" id="how-to-overview">
-  <h2>2PC v.s. 2PL?</h2>
-	<ol>
-		<li>
-			<h3>DIFFERENT!</h3>
-			<p>TRANSACTION conrol protocol v.s. CONCURRENCY control protocol</p>
 		</li>
 	</ol>
 </section>

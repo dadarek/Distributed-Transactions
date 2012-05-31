@@ -271,9 +271,35 @@ body.deck-container {
 .slide em {
   font-style: italic;
 }
+
+.slide ul, .slide ol {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
 .slide li {
   padding: .25em 0;
   vertical-align: middle;
+  list-style-type: none;
+}
+
+.slide table.isolation td, .slide table.isolation th
+{
+  padding: 0.3em;
+}
+
+.slide table.isolation td.active
+{
+  font-family: courier;
+  border: 1px dotted #000000;
+}
+
+.slide table.isolation .comment
+{
+  font-style: italic;
+  color: #444444;
+  display: block;
 }
 
 .deck-before, .deck-previous, .deck-next, .deck-after {
