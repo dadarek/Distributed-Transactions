@@ -39,15 +39,19 @@
 	<ol>
 		<li><h3>What are Transactions</h3></li>
 		<li><h3>ACID Properties</h3></li>
-		<li><h3>2-Phase Commit</h3></li>
 		<li><h3>Checkpointing + Logging</h3></li>
+		<li><h3>2-Phase Commit Protocol</h3></li>
 	</ol>
 </section>
 
 <section class="slide" id="few-examples">
-  <h2>A Few Examples</h2>
+  <h2>Transactions</h2>
 	<ol class="slide">
-		<li><h3>.........</h3></li>
+		<li><h3>Banks</h3></li>
+		<li><h3>Stores</h3></li>
+		<li><h3>Report Card</h3></li>
+		<li><h3>File Systems</h3></li>
+		<li><h3>Military</h3></li>
 	</ol>
 </section>
 
@@ -439,38 +443,13 @@
   <p>TODO: Image of failed one-phase commit</p>
 </section>
 
-<section class="slide" id="two-phase-commit-blocks">
-  <h2>Two-Phase Commit Blocks</h2>
+<section class="slide" id="two-phase-commit">
+  <h2>Two-Phase Commit (2PC)</h2>
   <ol>
-    <li><h3>Participant waiting for vote requests - abort after timeout</h3></li>
-    <li><h3>Coordinator waiting for vote replies - abort after timeout</h3></li>
-    <li><h3>Participants waiting for decision - CANNOT abort</h3>
-      <ol>
-        <li>Abort if: neighbor is waiting for vote request</li>
-        <li>Commit if: neighbor committed</li>
-        <li>Block if: all neighbors waiting for decision</li>
-      </ol>
-    </li>
+    <li><h3>1) Vote</h3></li>
+    <li><h3>2) Decide</h3></li>
+    <li><h3>3) Go!</h3></li>
   </ol>
-</section>
-
-<section class="slide" id="two-phase-upon-recovery">
-  <h2>Two-Phase Upon Recovery</h2>
-  <ol>
-    <li><h3>If you're in INIT - abort</h3></li>
-    <li><h3>If you made decision - contact coordinator</h3></li>
-    <li><h3>If you're in READY - contact neighbors or coordinator</h3>
-      <ol>
-        <li>Abort if: neighbor is waiting for vote request</li>
-        <li>Commit if: neighbor committed</li>
-        <li>Block if: all neighbors waiting for decision</li>
-      </ol>
-    </li>
-  </ol>
-</section>
-
-<section class="slide" id="two-phase-state-machine">
-  <h2>Two-Phase State Machine</h2>
 </section>
 
 <section class="slide" id="two-phase-assumptions">
@@ -484,7 +463,15 @@
   </ol>
 </section>
 
-<section class="slide" id="two-phase-commit">
+<section class="slide" id="checkpointing-logging">
+  <h2>Checkpointing + Logging</h2>
+  <ol>
+    <li><h3>Coordinate Checkpointing</h3></li>
+    <li><h3>Optimistic + Pessimistic Logging</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="stable-storage">
   <h2>Stable Storage is 'relative'</h2>
   <ol>
     <li><h3>Redundancy</h3></li>
@@ -492,6 +479,47 @@
   </ol>
 </section>
 
+<section class="slide" id="two-phase-commit-blocks">
+  <h2>Two-Phase Commit - Blocks</h2>
+  <ol>
+    <li><h3>Coordinator waiting for vote replies - ABORT</h3></li>
+    <li><h3>Participant waiting for vote requests - ABORT</h3></li>
+    <li><h3>Participants waiting for decision - UH-OH!</h3>
+      <ol style="margin-left: 2em;">
+        <li><h4>Neighbor is waiting for vote request - ABORT</h4></li>
+        <li><h4>Neighbor committed - COMMIT</h4></li>
+        <li><h4>Neighbor aborted - ABORT</h4></li>
+        <li><h4>ALL Neighbors waiting for decision - Sorry ...</h4></li>
+      </ol>
+    </li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit-coordinator-recovery">
+  <h2>Two-Phase Commit - Coordinator Recovery</h2>
+  <ol>
+    <li><h3>Simple - check your log!</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit-participant-recovery">
+  <h2>Two-Phase Commit - Participant Recovery</h2>
+  <ol>
+    <li><h3>First, check your log - COMMIT, ABORT, or ...</h3></li>
+    <li><h3>If you're in INIT - ABORT</h3></li>
+    <li><h3>If you're in READY - poll neighbors</h3>
+      <ol style="margin-left: 2em;">
+        <li><h4>Neighbor waiting for vote request - ABORT</h4></li>
+        <li><h4>Neighbor committed - COMMIT</h4></li>
+        <li><h4>Neighbor blocked - Block</h4></li>
+      </ol>
+    </li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-state-machine">
+  <h2>Two-Phase State Machine</h2>
+</section>
 <section class="slide" id="error-recovery">
   <h2>Error Recovery</h2>
   <ol>
@@ -500,14 +528,6 @@
     <li><br /><h3>Delete internet cache fail:<br />
       <span style="font-family: calibri">$ rm -rf&nbsp;&nbsp;/</span></h3></li>
     <li><br /><h3>Compensating Transactions</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="checkpointing-logging">
-  <h2>Checkpointing + Logging</h2>
-  <ol>
-    <li><h3>Coordinate Checkpointing</h3></li>
-    <li><h3>Optimistic + Pessimistic Logging</h3></li>
   </ol>
 </section>
 
@@ -543,8 +563,8 @@
 	<ol>
 		<li><h3>What are Transactions</h3></li>
 		<li><h3>ACID Properties</h3></li>
-		<li><h3>2-Phase Commit</h3></li>
 		<li><h3>Checkpointing + Logging</h3></li>
+		<li><h3>2-Phase Commit Protocol</h3></li>
 	</ol>
 </section>
 
