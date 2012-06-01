@@ -31,7 +31,7 @@
 
 <!-- Begin slides -->
 <section class="slide" id="title-slide">
-	<h1>(Distributed) Transactions</h1>
+	<h1>Distributed Transactions</h1>
 </section>
 
 <section class="slide" id="what-well-cover">
@@ -40,7 +40,7 @@
 		<li><h3>What are Transactions</h3></li>
 		<li><h3>ACID Properties</h3></li>
 		<li><h3>2-Phase Commit Protocol</h3></li>
-		<li><h3>Checkpointing + Logging</h3></li>
+		<li><h3>Checkpointing</h3></li>
 	</ol>
 </section>
 
@@ -49,14 +49,13 @@
 	<ol class="slide">
 		<li><h3>Banks</h3></li>
 		<li><h3>Stores</h3></li>
-		<li><h3>Report Card</h3></li>
+		<li><h3>Satelites</h3></li>
 		<li><h3>File Systems</h3></li>
-		<li><h3>Military</h3></li>
 	</ol>
 </section>
 
 <section class="slide" id="acid">
-  <h2>ACID</h2>
+  <h2>Properties of Transactions</h2>
   <hr />
   <h2>Atomic</h2>
   <h2>Consistent</h2>
@@ -68,9 +67,7 @@
   <h2>Atomic</h2>
   <ol>
     <li><h3>All or none</h3></li>
-    <li><h3>Castle Siege</h3></li>
     <li><h3>Transfer Money Fail</h3></li>
-    <li><h3>Vacation to Mexico</h3></li>
     <li><h3>All DB tables</h3></li>
   </ol>
 </section>
@@ -92,6 +89,65 @@
     <li><h3>Concurrency Control</h3></li>
     <li><h3>Depositing Check + Direct Depost</h3></li>
   </ol>
+</section>
+
+<section class="slide" id="isolation-graph">
+  <h2>Isolated</h2>
+  <table class="isolation">
+    <tr>
+      <th><h3>What Actually Happens</h3></th>
+      <th>&nbsp;&nbsp;</th>
+      <th><h3>What the World (Should) See</h3></th>
+    </tr><tr>
+      <td>
+        <table>
+          <tr>
+            <th>Transaction 1</th>
+            <th>Transaction 2</th>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+      <td>&nbsp;&nbsp;</td>
+      <td>
+        <table>
+          <tr>
+            <th>Transaction 1</th>
+            <th>Transaction 2</th>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td class="active" style="background-color: #770000;">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td class="active" style="background-color: #000077;">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </section>
 
 <section class="slide" id="durable">
@@ -164,63 +220,170 @@
   <h3 class="slide">Atomic - Consistent - Isolated - Durable</h3>
 </section>
 
-<section class="slide" id="isolation-graph">
-  <h2>Isolated (revisited)</h2>
-  <table class="isolation">
-    <tr>
-      <th><h3>What Actually Happens</h3></th>
-      <th>&nbsp;&nbsp;</th>
-      <th><h3>What the World (Should) See</h3></th>
-    </tr><tr>
-      <td>
-        <table>
-          <tr>
-            <th>Transaction 1</th>
-            <th>Transaction 2</th>
-          </tr><tr>
-            <td class="active" style="background-color: #770000;">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr><tr>
-            <td>&nbsp;</td>
-            <td class="active" style="background-color: #000077;">&nbsp;</td>
-          </tr><tr>
-            <td class="active" style="background-color: #770000;">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr><tr>
-            <td class="active" style="background-color: #770000;">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr><tr>
-            <td>&nbsp;</td>
-            <td class="active" style="background-color: #000077;">&nbsp;</td>
-          </tr>
-        </table>
-      </td>
-      <td>&nbsp;&nbsp;</td>
-      <td>
-        <table>
-          <tr>
-            <th>Transaction 1</th>
-            <th>Transaction 2</th>
-          </tr><tr>
-            <td class="active" style="background-color: #770000;">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr><tr>
-            <td class="active" style="background-color: #770000;">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr><tr>
-            <td class="active" style="background-color: #770000;">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr><tr>
-            <td>&nbsp;</td>
-            <td class="active" style="background-color: #000077;">&nbsp;</td>
-          </tr><tr>
-            <td>&nbsp;</td>
-            <td class="active" style="background-color: #000077;">&nbsp;</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+<section class="slide" id="protocol">
+  <h2>def Protocol</h2>
+  <ol>
+    <li><h3>Diplomatic Meetings</h3></li>
+    <li><h3>"Get stuff done"</h3></li>
+    <li><h3>When things go wrong ...</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="one-phase-commit">
+  <h2>One-Phase Commit</h2>
+  <ol>
+    <li><h3>Very Crude</h3></li>
+    <li><h3>"Just do it ..."</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit">
+  <h2>Two-Phase Commit</h2>
+  <ol>
+    <li><h3>One Coordinator</h3></li>
+    <li><h3>Several Participants</h3></li>
+  </ol>
+  <br />
+  <ol>
+    <li><h3>1) Collect Votes</h3></li>
+    <li><h3>2) Then Decide</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-assumptions">
+  <h2>Two-Phase Commit - Prerequisites</h2>
+  <ol>
+    <li><h3>Stable Storage</h3></li>
+    <li><h3>Write-Ahead Logging</h3></li>
+    <li><h3>No Corruptions</h3></li>
+    <li><h3>Nobody dies forever</h3></li>
+    <li><h3>Communication between nodes</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit-blocks">
+  <h2>Two-Phase Commit - Blocks</h2>
+  <ol>
+    <li><h3>Coordinator waiting for vote replies - ABORT</h3></li>
+    <li><h3>Participant waiting for vote requests - ABORT</h3></li>
+    <li><h3>Participants waiting for decision - UH-OH!</h3>
+      <ol style="margin-left: 2em;">
+        <li><h4>Neighbor is waiting for vote request - ABORT</h4></li>
+        <li><h4>Neighbor committed - COMMIT</h4></li>
+        <li><h4>Neighbor aborted - ABORT</h4></li>
+        <li><h4>ALL Neighbors waiting for decision - Sorry ...</h4></li>
+      </ol>
+    </li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit-coordinator-recovery">
+  <h2>Two-Phase Commit - Coordinator Recovery</h2>
+  <ol>
+    <li><h3>Simple - check your log!</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-commit-participant-recovery">
+  <h2>Two-Phase Commit - Participant Recovery</h2>
+  <ol>
+    <li><h3>First, check your log - COMMIT, ABORT, or ...</h3></li>
+    <li><h3>If you're in INIT - ABORT</h3></li>
+    <li><h3>If you're in READY - poll neighbors</h3>
+      <ol style="margin-left: 2em;">
+        <li><h4>Neighbor waiting for vote request - ABORT</h4></li>
+        <li><h4>Neighbor committed - COMMIT</h4></li>
+        <li><h4>Neighbor blocked - Block</h4></li>
+      </ol>
+    </li>
+  </ol>
+</section>
+
+<section class="slide" id="error-recovery">
+  <h2>Error Recovery</h2>
+  <ol>
+    <li><h3><em>Not always possible...</em></h3></li>
+    <li><br /><h3>Recover $$$ from ATM Error</h3></li>
+    <li><br /><h3>Delete internet cache fail:<br />
+      <span style="font-family: calibri">$ rm -rf&nbsp;&nbsp;/</span></h3></li>
+    <li><br /><h3>Compensating Transactions</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="checkpointing-1">
+  <h2>Checkpointing - For When Things Get Really Bad</h2>
+  <p><img src="images/Checkpoints-1.jpg" style="width: 100%;" /></p>
+</section>
+
+<section class="slide" id="checkpointing-2">
+  <h2>Invalid Recovery Lines</h2>
+  <p><img src="images/Checkpoints-2.jpg" style="width: 100%;" /></p>
+</section>
+
+<section class="slide" id="checkpointing-3">
+  <h2>Domino Effect</h2>
+  <p><img src="images/Checkpoints-3.jpg" style="width: 100%;" /></p>
+</section>
+
+<section class="slide" id="checkpointing-4">
+  <h2>Synchronized Checkpoints</h2>
+  <p><img src="images/Checkpoints-4.jpg" style="width: 100%;" /></p>
+</section>
+
+<section class="slide" id="checkpointing-5">
+  <h2>Simple Incremental Checkpoints</h2>
+  <p><img src="images/Checkpoints-5.jpg" style="width: 100%;" /></p>
+</section>
+
+<section class="slide" id="checkpointing-6">
+  <h2>Complex Incremental Checkpoints</h2>
+  <p><img src="images/Checkpoints-6.jpg" style="width: 100%;" /></p>
+</section>
+
+<section class="slide" id="two-phase-na">
+  <h2>Two-Phase Commit - Maybe not?</h2>
+  <ol>
+    <li><h3>Large, Independent Systems</h3></li>
+    <li><h3>Asynch - Amazon MWS</h3></li>
+    <li><h3>Airline Bookings</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="two-phase-problems">
+  <h2>Two-Phase Commit - Problems?</h2>
+  <ol>
+    <li><h3>Coordinator + Node Crash</h3></li>
+    <li><h3>What do we do?</h3></li>
+    <li><h3>Block</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="three-phase-commit">
+  <h2>Three-Phase Commit</h2>
+  <ol>
+    <li><h3>One Coordinator</h3></li>
+    <li><h3>Several Participants</h3></li>
+  </ol>
+  <br />
+  <ol>
+    <li><h3>1) Collect Votes</h3></li>
+    <li><h3>2) Prepare Participants</h3></li>
+    <li><h3>3) Confirm</h3></li>
+  </ol>
+</section>
+
+<section class="slide" id="what-well-cover">
+  <h2>What We Just Learned</h2>
+	<ol>
+		<li><h3>What are Transactions</h3></li>
+		<li><h3>ACID Properties</h3></li>
+		<li><h3>2-Phase Commit Protocol</h3></li>
+		<li><h3>Checkpointing</h3></li>
+	</ol>
+</section>
+
+<section class="slide" id="references">
+  <h2>References</h2>
 </section>
 
 <section class="slide" id="isolation-revisited">
@@ -415,204 +578,6 @@
     <h2>Random Transaction Victim</h2>
     <h3>Avoid with good concurrency control protocols</h3>
   </div>
-</section>
-
-<section class="slide" id="protocol">
-  <h2>def Protocol</h2>
-  <ol>
-    <li><h3>Diplomatic Meetings</h3></li>
-    <li><h3>"Get stuff done"</h3></li>
-    <li><h3>Skiing/Shopping</h3></li>
-    <li><h3>When things go wrong ...</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="one-phase-commit">
-  <h2>One-Phase Commit (1PC)</h2>
-  <ol>
-    <li><h3>Just do it!</h3></li>
-  </ol>
-  <p>TODO: Image of one-phase commit</p>
-</section>
-
-<section class="slide" id="one-phase-commit-whoops">
-  <h2>One-Phase Commit - Whoops!</h2>
-  <ol>
-    <li><h3>What if someone can't commit?</h3></li>
-  </ol>
-  <p>TODO: Image of failed one-phase commit</p>
-</section>
-
-<section class="slide" id="two-phase-assumptions">
-  <h2>Two-Phase Commit - Assumptions</h2>
-  <ol>
-    <li><h3>Stable Storage</h3></li>
-    <li><h3>Write-Ahead Logging</h3></li>
-    <li><h3>No Corruptions</h3></li>
-    <li><h3>Nobody dies forever</h3></li>
-    <li><h3>Communication between nodes</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="stable-storage">
-  <h2>Stable Storage is 'relative'</h2>
-  <ol>
-    <li><h3>Redundancy</h3></li>
-    <li><h3>We have 2 arms, 2 eyes, 10 fingers ... </h3></li>
-    <li><h3>Sinkhole</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="two-phase-commit">
-  <h2>Two-Phase Commit (2PC)</h2>
-  <ol>
-    <li><h3>1) Vote</h3></li>
-    <li><h3>2) Decide</h3></li>
-    <li><h3>3) Go!</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="two-phase-commit-blocks">
-  <h2>Two-Phase Commit - Blocks</h2>
-  <ol>
-    <li><h3>Coordinator waiting for vote replies - ABORT</h3></li>
-    <li><h3>Participant waiting for vote requests - ABORT</h3></li>
-    <li><h3>Participants waiting for decision - UH-OH!</h3>
-      <ol style="margin-left: 2em;">
-        <li><h4>Neighbor is waiting for vote request - ABORT</h4></li>
-        <li><h4>Neighbor committed - COMMIT</h4></li>
-        <li><h4>Neighbor aborted - ABORT</h4></li>
-        <li><h4>ALL Neighbors waiting for decision - Sorry ...</h4></li>
-      </ol>
-    </li>
-  </ol>
-</section>
-
-<section class="slide" id="two-phase-commit-coordinator-recovery">
-  <h2>Two-Phase Commit - Coordinator Recovery</h2>
-  <ol>
-    <li><h3>Simple - check your log!</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="two-phase-commit-participant-recovery">
-  <h2>Two-Phase Commit - Participant Recovery</h2>
-  <ol>
-    <li><h3>First, check your log - COMMIT, ABORT, or ...</h3></li>
-    <li><h3>If you're in INIT - ABORT</h3></li>
-    <li><h3>If you're in READY - poll neighbors</h3>
-      <ol style="margin-left: 2em;">
-        <li><h4>Neighbor waiting for vote request - ABORT</h4></li>
-        <li><h4>Neighbor committed - COMMIT</h4></li>
-        <li><h4>Neighbor blocked - Block</h4></li>
-      </ol>
-    </li>
-  </ol>
-</section>
-
-<section class="slide" id="two-phase-state-machine">
-  <h2>Two-Phase State Machine</h2>
-</section>
-
-<section class="slide" id="error-recovery">
-  <h2>Error Recovery</h2>
-  <ol>
-    <li><h3><em>Not always possible...</em></h3></li>
-    <li><br /><h3>Recover $$$ from ATM Error</h3></li>
-    <li><br /><h3>Delete internet cache fail:<br />
-      <span style="font-family: calibri">$ rm -rf&nbsp;&nbsp;/</span></h3></li>
-    <li><br /><h3>Compensating Transactions</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="checkpointing-logging">
-  <h2>Checkpointing + Logging</h2>
-  <ol>
-    <li><h3>When things go really "kerplooie"</h3></li>
-    <li><h3>Independant Checkpointing</h3></li>
-    <li><h3>Coordinated Checkpointing</h3></li>
-    <li><h3>Optimistic Logging</h3></li>
-    <li><h3>Pessimistic Logging</h3></li>
-    <li><h3>Garbage Collection</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="checkpointing-1">
-  <h2>Distributed Checkpointing</h2>
-  <p><img src="images/Checkpoints-1.jpg" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="checkpointing-2">
-  <h2>Invalid Recovery Lines</h2>
-  <p><img src="images/Checkpoints-2.jpg" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="checkpointing-3">
-  <h2>Domino Effect</h2>
-  <p><img src="images/Checkpoints-3.jpg" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="checkpointing-4">
-  <h2>Synchronized Checkpoints</h2>
-  <p><img src="images/Checkpoints-4.jpg" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="checkpointing-5">
-  <h2>Simple Incremental Checkpoints</h2>
-  <p><img src="images/Checkpoints-5.jpg" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="checkpointing-6">
-  <h2>Complex Incremental Checkpoints</h2>
-  <p><img src="images/Checkpoints-6.jpg" style="width: 100%;" /></p>
-</section>
-
-<section class="slide" id="two-phase-na">
-  <h2>Two-Phase Commit - Maybe not?</h2>
-  <ol>
-    <li><h3>Large, Independent Systems</h3></li>
-    <li><h3>Asynch - Amazon MWS</h3></li>
-    <li><h3>Airline Bookings</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="two-phase-problems">
-  <h2>Two-Phase Commit - Problems?</h2>
-  <ol>
-    <li><h3>Coordinator + Node Crash</h3></li>
-    <li><h3>What do we do?</h3></li>
-    <li><h3>Block</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="three-phase">
-  <h2>Three-Phase Commit (3PC)</h2>
-  <ol>
-    <li><h3>Vote (rollback on timeout)</h3></li>
-    <li><h3>Prepare (commit on timeout - unless YOU crash)</h3></li>
-    <li><h3>Commit</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="three-phase-blocks">
-  <h2>Three-Phase Commit - Blocks</h2>
-  <ol>
-    <li><h3>Commit</h3></li>
-  </ol>
-</section>
-
-<section class="slide" id="what-well-cover">
-  <h2>What We Just Learned</h2>
-	<ol>
-		<li><h3>What are Transactions</h3></li>
-		<li><h3>ACID Properties</h3></li>
-		<li><h3>2-Phase Commit Protocol</h3></li>
-		<li><h3>Checkpointing + Logging</h3></li>
-	</ol>
-</section>
-
-<section class="slide" id="references">
-  <h2>References</h2>
 </section>
 
 <!-- deck.navigation snippet -->
